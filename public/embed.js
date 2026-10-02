@@ -21,6 +21,19 @@
     }
   };
 
+  // Full base URL (origin + directory) of the folder this embed.js lives in, so
+  // the viewer iframe loads the sibling index.html under whatever subpath the
+  // viewer is hosted at - not the server root. Falls back to the page's dir.
+  const getBaseUrl = () => {
+    const script = getScriptTag();
+    try {
+      const src = script?.src ? new URL(script.src, window.location.href) : new URL(window.location.href);
+      return new URL(".", src).href; // directory of the script (ends with "/")
+    } catch {
+      return new URL(".", window.location.href).href;
+    }
+  };
+
   const resolveContainer = (container) => {
     if (!container) return null;
     if (typeof container === "string") return document.querySelector(container);
@@ -61,7 +74,14 @@
   };
 
   const create = (options = {}) => {
-    const baseOrigin = options.baseOrigin || getBaseOrigin();
+    // Where to load the viewer app from. Precedence: an explicit full URL, then
+    // an explicit origin (legacy; loads that origin's root), then auto-detect
+    // the directory this embed.js was served from (correct under any subpath).
+    const baseUrl = options.baseUrl
+      ? new URL(options.baseUrl, window.location.href).href
+      : options.baseOrigin
+        ? `${String(options.baseOrigin).replace(/\/+$/, "")}/`
+        : getBaseUrl();
     const container = resolveContainer(options.container) || document.body;
     const token = createToken();
     const wrapper = document.createElement("div");
@@ -70,7 +90,7 @@
     wrapper.style.height = options.height || DEFAULT_HEIGHT;
 
     const iframe = document.createElement("iframe");
-    iframe.src = buildIframeSrc(`${baseOrigin}/`, options, token);
+    iframe.src = buildIframeSrc(baseUrl, options, token);
     iframe.style.border = "0";
     iframe.style.width = "100%";
     iframe.style.height = "100%";

@@ -53,18 +53,22 @@ const storeTheme = (theme) => {
   }
 };
 
-export function ThemeProvider({ children, defaultTheme = "auto" }) {
+export function ThemeProvider({ children, defaultTheme = "auto", forcedTheme = null }) {
+  // An embed host can pin the theme (?theme=...). When forced, we use it as the
+  // initial theme and do NOT read or write localStorage, so an embed never
+  // clobbers the standalone viewer's saved preference.
+  const forced = forcedTheme && VALID_THEMES.includes(forcedTheme) ? forcedTheme : null;
+
   const [isTransitioning, setIsTransitioning] = useState(false);
   const isInitialMount = useRef(true);
 
-  // Initialize from localStorage or default
+  // Initialize from the forced theme, else localStorage, else default
   const [theme, setThemeState] = useState(() => {
     // Prevent transitions on initial load
     document.documentElement.classList.add("no-transitions");
 
-    const stored = getStoredTheme(defaultTheme);
-    const effectiveTheme = getEffectiveTheme(stored);
-    applyTheme(effectiveTheme);
+    const initial = forced || getStoredTheme(defaultTheme);
+    applyTheme(getEffectiveTheme(initial));
 
     // Re-enable transitions after a short delay
     requestAnimationFrame(() => {
@@ -73,7 +77,7 @@ export function ThemeProvider({ children, defaultTheme = "auto" }) {
       });
     });
 
-    return stored;
+    return initial;
   });
 
   // Computed effective theme (resolves "auto" to actual theme)
@@ -88,7 +92,7 @@ export function ThemeProvider({ children, defaultTheme = "auto" }) {
       isInitialMount.current = false;
       setEffectiveTheme(newEffective);
       applyTheme(newEffective);
-      storeTheme(theme);
+      if (!forced) storeTheme(theme);
       return;
     }
 
@@ -99,7 +103,7 @@ export function ThemeProvider({ children, defaultTheme = "auto" }) {
     const applyTimer = setTimeout(() => {
       setEffectiveTheme(newEffective);
       applyTheme(newEffective);
-      storeTheme(theme);
+      if (!forced) storeTheme(theme);
     }, 100);
 
     // Hide overlay after transition completes

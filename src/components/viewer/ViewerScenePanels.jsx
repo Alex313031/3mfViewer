@@ -35,7 +35,7 @@ export function ViewerScenePanels({
             aria-label="Return to home"
           >
             <img
-              src="/3mf_logo.png"
+              src="3mf_logo.png"
               alt="3MF"
               className="h-7 w-auto select-none dark-invert"
               draggable={false}

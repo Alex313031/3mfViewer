@@ -7,6 +7,7 @@ export const parseEmbedConfig = () => {
       origin: null,
       token: null,
       transparent: false,
+      theme: null,
     };
   }
   const params = new URLSearchParams(window.location.search);
@@ -19,6 +20,7 @@ export const parseEmbedConfig = () => {
       origin: null,
       token: null,
       transparent: false,
+      theme: null,
     };
   }
   const normalized = rawEmbed === "1" || rawEmbed === "true" ? "quick" : rawEmbed;
@@ -44,6 +46,8 @@ export const parseEmbedConfig = () => {
   }
   const transparentValue = params.get("transparent");
   const transparent = transparentValue === "1" || transparentValue === "true";
+  const themeParam = params.get("theme");
+  const theme = ["light", "dark", "auto"].includes(themeParam) ? themeParam : null;
   const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
   const token = hashParams.get("viewerToken") || params.get("viewerToken") || null;
   return {
@@ -53,6 +57,7 @@ export const parseEmbedConfig = () => {
     origin,
     token,
     transparent,
+    theme,
   };
 };
 

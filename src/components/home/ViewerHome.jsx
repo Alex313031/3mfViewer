@@ -106,7 +106,7 @@ export function ViewerHome({
                 <div className="mt-7 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
                   <div>
                     <img
-                      src="/3mf_logo.png"
+                      src="3mf_logo.png"
                       alt="3MF"
                       className="h-12 w-auto dark-invert sm:h-16"
                       draggable={false}

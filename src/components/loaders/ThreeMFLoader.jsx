@@ -358,7 +358,12 @@ export function ThreeMFLoaderProvider({ children }) {
             const hasTex = !!tex;
 
             const material = new THREE.MeshPhongMaterial({
-              color: hasTex ? "#ffffff" : solidColor,
+              // When vertex colors are active, the per-vertex color IS the color;
+              // material.color only multiplies it, so it must be white. (Using the
+              // resource's solidColor here tints everything when solidColor fell
+              // back to the blue/purple resource palette for a per-triangle-colored
+              // object - the "blue tinge on correctly-shaded parts" bug.)
+              color: hasTex || vertexColorsEnabled ? "#ffffff" : solidColor,
               map: tex || null,
               vertexColors: hasTex ? false : vertexColorsEnabled,
               specular: "#111111",

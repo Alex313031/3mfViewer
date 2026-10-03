@@ -35,7 +35,7 @@ function ViewerBootstrap() {
   if (runtimeError) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-slate-50 px-4 text-center text-slate-600">
-        <img src="/3mf_logo.png" alt="3MF" className="h-10 w-auto opacity-90" />
+        <img src="3mf_logo.png" alt="3MF" className="h-10 w-auto opacity-90" />
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold text-rose-600">Viewer failed to start</h1>
           <p className="text-sm text-slate-500">
@@ -56,7 +56,7 @@ function ViewerBootstrap() {
   if (!runtimeReady) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-5 bg-slate-50 px-4 text-center text-slate-600">
-        <img src="/3mf_logo.png" alt="3MF" className="h-10 w-auto opacity-90" />
+        <img src="3mf_logo.png" alt="3MF" className="h-10 w-auto opacity-90" />
         <div className="relative h-12 w-12">
           <div className="absolute inset-0 rounded-full border-4 border-slate-200" />
           <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-slate-500 animate-spin" />

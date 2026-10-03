@@ -60,7 +60,7 @@ export function ViewerHud({
               aria-label="Return to home"
             >
               <img
-                src="/3mf_logo.png"
+                src="3mf_logo.png"
                 alt="3MF"
                 className="h-6 w-auto select-none dark-invert sm:h-7"
                 draggable={false}

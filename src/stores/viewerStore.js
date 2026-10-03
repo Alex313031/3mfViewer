@@ -4,7 +4,7 @@ import { create } from "zustand";
 export const DEFAULT_PREFS_LIGHT = {
   background: "#f8fafc",
   hemiSkyColor: "#ffffff",
-  hemiGroundColor: "#a7b1c2",
+  hemiGroundColor: "#b4b4b4",
   rimColor: "#ffffff",
   edgeColor: "#111827",
   // Lighting intensities for light mode
@@ -31,7 +31,7 @@ export const DEFAULT_PREFS = {
   ambient: 0.85,
   hemiIntensity: 0.9,
   hemiSkyColor: "#ffffff",
-  hemiGroundColor: "#a7b1c2",
+  hemiGroundColor: "#b4b4b4",
   rimIntensity: 0.25,
   rimColor: "#ffffff",
   ground: true,

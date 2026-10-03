@@ -13,9 +13,29 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   worker: {
     format: 'es',
+    // same stable naming for the worker bundle, so it doesn't emit hashed
+    // duplicates of lib3mf / the wasm alongside the main bundle's stable copies
+    rollupOptions: {
+      output: {
+        entryFileNames: "assets/[name].js",
+        chunkFileNames: "assets/[name].js",
+        assetFileNames: "assets/[name][extname]",
+      },
+    },
   },
   build: {
     chunkSizeWarningLimit: 2000,
+    // Stable asset filenames (no content hash) so the vendored build doesn't churn
+    // git on every rebuild: the committed parts/vendor/assets/ keeps the same names
+    // and git shows content diffs instead of add/delete of hashed files. Trade-off:
+    // no hash-based cache-busting - fine for a self-hosted, version-controlled viewer.
+    rollupOptions: {
+      output: {
+        entryFileNames: "assets/[name].js",
+        chunkFileNames: "assets/[name].js",
+        assetFileNames: "assets/[name][extname]",
+      },
+    },
   },
   logLevel: 'info',
   define: {
